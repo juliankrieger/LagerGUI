@@ -10,6 +10,7 @@ public class Artikel {
     private StringProperty name;
     private IntegerProperty stock;
     private FloatProperty price; //will be converted to and from BigInt when calcing.
+    private StringProperty kind;
 
     public static final int ID_MIN = 0;
     public static final int ID_MAX = 9999;
@@ -19,6 +20,14 @@ public class Artikel {
         this.name = new SimpleStringProperty("sample");
         this.stock = new SimpleIntegerProperty(0);
         this.price = new SimpleFloatProperty(0F);
+    }
+
+    /**
+     * MUST be overwritten by sublcasses!
+     */
+    //TODO create MetaArtikel which is abstract
+    public void setKind(){
+        this.kind = new SimpleStringProperty("Artikel");
     }
 
     public Artikel(int id, String name, int stack, BigDecimal price){
@@ -46,6 +55,7 @@ public class Artikel {
         }
         this.id = new SimpleIntegerProperty(id);
         this.name = new SimpleStringProperty(name);
+        this.setKind();
 
     }
 
@@ -55,6 +65,14 @@ public class Artikel {
 
     public IntegerProperty idProperty() {
         return id;
+    }
+
+    public String getKind() {
+        return kind.get();
+    }
+
+    public StringProperty kindProperty() {
+        return kind;
     }
 
     public void setId(int id) {

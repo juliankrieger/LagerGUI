@@ -2,12 +2,14 @@ package Controllers.views;
 
 import javafx.fxml.FXML;
 import javafx.scene.control.Alert;
+import javafx.scene.control.TextField;
 import javafx.stage.Stage;
 import Controllers.structs.Artikel;
 
-import java.awt.*;
+
 import java.math.BigDecimal;
 import java.util.Scanner;
+import java.util.regex.Pattern;
 
 public class ArtikelEditController {
     @FXML
@@ -79,19 +81,22 @@ public class ArtikelEditController {
                 || (Integer.parseInt(this.idField.getText()) < Artikel.ID_MIN)
                 || (Integer.parseInt(this.idField.getText()) > Artikel.ID_MAX)){
 
-            sb.append("ID is not valid!\n");
+            sb.append("ID must be a four digit number above 0!\n");
 
-        }else if(this.nameField.getText() == null || this.nameField.getText().isEmpty()){
-            sb.append("Name must not be empty!\n");
+        }else if(this.nameField.getText() == null || this.nameField.getText().isEmpty()) {
+            sb.append("Name can't be empty!\n");
+
+        }else if(!this.nameField.getText().matches("[a-zA-Z]+")){
+            sb.append("Name must only contain letters!");
 
         }else if(this.stockField.getText() == null || !isInteger(this.stockField.getText())
-                || (Integer.parseInt(this.nameField.getText()) < 0)){
+                || (Integer.parseInt(this.stockField.getText()) < 0)){
 
-            sb.append("Stock must be a number and not be below zero!\n");
+            sb.append("Stock must be a number and above 0!\n");
 
         }else if(this.priceField.getText() == null || !isFloat(this.priceField.getText())
                 || Float.parseFloat(this.priceField.getText())  < 0F){
-            sb.append("Price must be a number and not below 0!");
+            sb.append("Price must be a number and above 0!");
         }
 
         if(sb.length() == 0){
@@ -114,11 +119,10 @@ public class ArtikelEditController {
     public static boolean isInteger(String s) {
         try{
             Integer.parseInt(s);
-        }catch(NumberFormatException e){
+        }catch(NumberFormatException e) {
             return false;
-        }finally{
-            return true;
         }
+        return true;
 
     }
 
@@ -127,9 +131,10 @@ public class ArtikelEditController {
             Float f = Float.parseFloat(s);
         }catch(NumberFormatException e){
             return false;
-        }finally{
-            return true;
         }
+
+        return true;
+
     }
 
 }
