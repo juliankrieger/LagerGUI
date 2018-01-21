@@ -22,12 +22,19 @@ public class Artikel {
         this.price = new SimpleFloatProperty(0F);
     }
 
-    /**
-     * MUST be overwritten by sublcasses!
-     */
-    //TODO create MetaArtikel which is abstract
-    public void setKind(){
-        this.kind = new SimpleStringProperty("Artikel");
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+
+        Artikel artikel = (Artikel) o;
+
+        return getId() == artikel.getId();
+    }
+
+    @Override
+    public int hashCode() {
+        return getId();
     }
 
     public Artikel(int id, String name, int stack, BigDecimal price){
@@ -37,6 +44,14 @@ public class Artikel {
         }
         this.price = new SimpleFloatProperty(price.floatValue());
 
+    }
+
+    /**
+     * MUST be overwritten by sublcasses!
+     */
+    //TODO create MetaArtikel which is abstract
+    public void setKind(){
+        this.kind = new SimpleStringProperty("Artikel");
     }
 
     public Artikel(int id, String name, int stack){

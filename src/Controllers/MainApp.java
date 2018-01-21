@@ -1,8 +1,11 @@
 package Controllers;
 
 import Controllers.structs.Artikel;
+import Controllers.structs.CD;
 import Controllers.structs.Lager;
 import Controllers.views.ArtikelEditController;
+import Controllers.views.ArtikelNewChooserController;
+import Controllers.views.ArtikelNewController;
 import Controllers.views.ArtikelOverviewController;
 import javafx.application.Application;
 import javafx.event.EventHandler;
@@ -32,6 +35,7 @@ public class MainApp extends Application {
     public MainApp(){
         this.lager = new Lager();
         lager.addArtikel(new Artikel(1000, "Ding", 5 , BigDecimal.valueOf(10)));
+        lager.addArtikel(new CD(5555, "Aggressive", 100, BigDecimal.valueOf(19.99), "Beartooth", 9));
     }
 
     /**
@@ -55,6 +59,71 @@ public class MainApp extends Application {
         }
     }
 
+    public Artikel showArtikelNewChooserDialog(){
+        try {
+            //Load the fxml file and create a new Stage for the popup dialog.
+
+            FXMLLoader loader = new FXMLLoader();
+            loader.setLocation(MainApp.class.getResource("views/ArtikelNewChooser.fxml"));
+            AnchorPane page = (AnchorPane) loader.load();
+
+            //create the dialog Stage.
+            Stage dialogStage = new Stage();
+            dialogStage.setTitle("Choose Artikel kind");
+            dialogStage.initModality(Modality.WINDOW_MODAL);
+            dialogStage.initOwner(primaryStage);
+            Scene scene = new Scene(page);
+            dialogStage.setScene(scene);
+
+            //Set controller
+            ArtikelNewChooserController controller = loader.getController();
+            controller.setDialogStage(dialogStage);
+
+
+            //show dialog and wait until user closes it
+            dialogStage.showAndWait();
+
+            if(controller.isOkClicked()){
+                return controller.getArt();
+            }
+        }catch(IOException e){
+            e.printStackTrace();
+            AppLogger.logger.log(Level.SEVERE, "Fatal error while choosing Kind of a new Artikel", e);
+            return null;
+        }
+        return null;
+    }
+
+    public boolean showArtikelNewDialog(Artikel art){
+        try{
+            // Load the fxml file and create a new stage for the popup dialog.
+            FXMLLoader loader = new FXMLLoader();
+            loader.setLocation(MainApp.class.getResource("views/ArtikelNewDialogue.fxml"));
+            AnchorPane page = (AnchorPane) loader.load();
+
+            // Create the dialog Stage.
+            Stage dialogStage = new Stage();
+            dialogStage.setTitle("New Artikel");
+            dialogStage.initModality(Modality.WINDOW_MODAL);
+            dialogStage.initOwner(primaryStage);
+            Scene scene = new Scene(page);
+            dialogStage.setScene(scene);
+
+            // Set the artikel into the controller.
+            ArtikelNewController controller = loader.getController();
+            controller.setDialogStage(dialogStage);
+            controller.setArtikel(art);
+
+            // Show the dialog and wait until the user closes it
+            dialogStage.showAndWait();
+
+            return controller.isOkClicked();
+        }catch(IOException e){
+            e.printStackTrace();
+            AppLogger.logger.log(Level.SEVERE, "Fatal error while editing an Artikel", e);
+            return false;
+        }
+    }
     public boolean showArtikelEditDialog(Artikel art){
         try{
             // Load the fxml file and create a new stage for the popup dialog.
@@ -70,7 +139,7 @@ public class MainApp extends Application {
             Scene scene = new Scene(page);
             dialogStage.setScene(scene);
 
-            // Set the person into the controller.
+            // Set the artikel into the controller.
             ArtikelEditController controller = loader.getController();
             controller.setDialogStage(dialogStage);
             controller.setArtikel(art);

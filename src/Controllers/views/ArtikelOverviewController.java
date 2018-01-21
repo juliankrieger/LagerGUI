@@ -2,8 +2,7 @@ package Controllers.views;
 
 import Controllers.AppLogger;
 import Controllers.MainApp;
-import Controllers.structs.Artikel;
-import Controllers.structs.Lager;
+import Controllers.structs.*;
 import javafx.beans.property.*;
 import javafx.fxml.FXML;
 import javafx.scene.control.Alert;
@@ -52,7 +51,7 @@ public class ArtikelOverviewController {
     private Label additionalLabelFilling2;
 
     @FXML
-    private boolean areAdditionalButtonsDisabled = true;
+    private boolean areAdditionalLabelsEnabled = false;
 
     private MainApp mainApp;
 
@@ -68,9 +67,13 @@ public class ArtikelOverviewController {
 
         this.idColumn.setCellValueFactory(cellData -> cellData.getValue().idProperty().asObject());
         this.nameColummn.setCellValueFactory(cellData -> cellData.getValue().nameProperty());
-        this.kindColumn.setCellValueFactory(cellData -> cellData.getValue().kindProperty());
+        this.kindColumn.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().getClass().getName()
+                .substring("Controllers.structs.".length())));
 
 
+
+        //Disable additioal buttons, which are unneeded for the start
+        this.disableAdditionalButtons();
 
         //clear person details
         showArtikelDetails(null);
@@ -91,13 +94,43 @@ public class ArtikelOverviewController {
     //TODO configure for CD, DVD and Book classes
     public void showArtikelDetails(Artikel art){
         if(art != null){
+
+            //Set the first four labels, which each subclass of Artikel shares
+            this.idLabel.setText(Integer.toString(art.getId()));
+            this.nameLabel.setText(art.getName());
+            this.stockLabel.setText(Integer.toString(art.getStock()));
+            this.priceLabel.setText(Float.toString(art.getPrice()));
+
+
+            //Denote the Rest
             if(art.getClass().equals(Artikel.class)) {
-                this.idLabel.setText(Integer.toString(art.getId()));
-                this.nameLabel.setText(art.getName());
-                this.stockLabel.setText(Integer.toString(art.getStock()));
-                this.priceLabel.setText(Float.toString(art.getPrice()));
-                //Disable additional buttons
                 this.disableAdditionalButtons();
+            //If the given Artikel is of instance CD
+            }else if(art instanceof CD){
+
+                CD cd = (CD) art;
+
+                this.enableAdditionalButtons();
+                this.additionalLabel1.setText("Interpret");
+                this.additionalLabelFilling1.setText(cd.getInterpret());
+                this.additionalLabel2.setText("Tracknumber");
+                this.additionalLabelFilling2.setText(Integer.toString(cd.getTracknumber()));
+            }else if(art instanceof DVD){
+
+                DVD dvd = (DVD) art;
+                this.enableAdditionalButtons();
+                this.additionalLabel1.setText("Release Date");
+                this.additionalLabelFilling1.setText(Integer.toString(dvd.getReleaseDate()));
+                this.additionalLabel2.setText("Playtime");
+                this.additionalLabelFilling2.setText(Integer.toString(dvd.getPlaytime()));
+            }else if (art instanceof Buch){
+
+                Buch buch = (Buch) art;
+                this.enableAdditionalButtons();
+                this.additionalLabel1.setText("Author");
+                this.additionalLabelFilling1.setText(buch.getAuthor());
+                this.additionalLabel2.setText("Verlag");
+                this.additionalLabelFilling2.setText(buch.getVerlag());
             }
         }else{
             this.idLabel.setText("");
@@ -127,11 +160,26 @@ public class ArtikelOverviewController {
      */
     @FXML
     private void handleNewArtikel() {
-        Artikel tempArtikel = new Artikel();
-        boolean okClicked = mainApp.showArtikelEditDialog(tempArtikel);
-        if (okClicked) {
-            mainApp.getLager().getArtikelData().add(tempArtikel);
+
+
+        Artikel tempArtikel = mainApp.showArtikelNewChooserDialog();
+        if(tempArtikel != null){
+            boolean okClicked = mainApp.showArtikelNewDialog(tempArtikel);
+            if (okClicked) {
+                if(mainApp.getLager().getArtikelData().contains(tempArtikel)){
+                    Alert alert = new Alert(Alert.AlertType.WARNING);
+                    alert.initOwner(mainApp.getPrimaryStage());
+                    alert.setTitle("ERROR");
+                    alert.setHeaderText("Artikel with same ID already in Lager!");
+
+
+                    alert.showAndWait();
+                }else {
+                    mainApp.getLager().getArtikelData().add(tempArtikel);
+                }
+            }
         }
+
     }
 
     /**
@@ -143,6 +191,7 @@ public class ArtikelOverviewController {
         Artikel selectedArtikel = artikelTable.getSelectionModel().getSelectedItem();
         if (selectedArtikel != null) {
             boolean okClicked = mainApp.showArtikelEditDialog(selectedArtikel);
+
             if (okClicked) {
                 showArtikelDetails(selectedArtikel);
             }
