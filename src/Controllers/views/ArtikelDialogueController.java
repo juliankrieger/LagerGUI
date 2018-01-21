@@ -167,9 +167,10 @@ public abstract class ArtikelDialogueController{
             errorMessageBuilder.append("Price must be a number and above 0!");
         }
 
-        checkAdditionalTextFields(this.additionalLabelFilling1);
-        checkAdditionalTextFields(this.additionalLabelFilling2);
-
+        if(this.art.getClass() != Artikel.class) {
+            checkAdditionalTextFields(this.additionalLabelFilling1);
+            checkAdditionalTextFields(this.additionalLabelFilling2);
+        }
         if(this.art instanceof DVD){
             DVD dvd = (DVD) art;
             if(isInteger(this.additionalLabelFilling1.getText())
