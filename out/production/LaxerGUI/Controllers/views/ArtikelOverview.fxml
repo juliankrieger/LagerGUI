@@ -55,10 +55,10 @@
                         <Label fx:id="idLabel" text="Label" GridPane.columnIndex="1" GridPane.rowIndex="2" />
                         <Label fx:id="stockLabel" text="Label" GridPane.columnIndex="1" GridPane.rowIndex="3" />
                         <Label fx:id="priceLabel" text="Label" GridPane.columnIndex="1" GridPane.rowIndex="4" />
-                        <Label fx:id="additionalLabel1" text="AddLabel1" GridPane.rowIndex="5" />
-                        <Label fx:id="additionalLabelFilling1" text="AddLabelFill1" GridPane.columnIndex="1" GridPane.rowIndex="5" />
-                        <Label fx:id="additionalLabel2" text="AddLabel2" GridPane.rowIndex="6" />
-                        <Label fx:id="additionalLabelFilling2" text="AddLabelFill2" GridPane.columnIndex="1" GridPane.rowIndex="6" />
+                        <Label fx:id="additionalLabel1Left" text="AddLabel1" GridPane.rowIndex="5" />
+                        <Label fx:id="additionalLabel1Right" text="AddLabelFill1" GridPane.columnIndex="1" GridPane.rowIndex="5" />
+                        <Label fx:id="additionalLabel2Left" text="AddLabel2" GridPane.rowIndex="6" />
+                        <Label fx:id="additionalLabel2Right" text="AddLabelFill2" GridPane.columnIndex="1" GridPane.rowIndex="6" />
                      </children>
                   </GridPane>
                   <Label alignment="CENTER" layoutX="5.0" layoutY="22.0" text="Artikel Details:" />

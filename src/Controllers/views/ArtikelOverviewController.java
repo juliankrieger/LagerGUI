@@ -1,6 +1,5 @@
 package Controllers.views;
 
-import Controllers.AppLogger;
 import Controllers.MainApp;
 import Controllers.structs.*;
 import javafx.beans.property.*;
@@ -10,9 +9,9 @@ import javafx.scene.control.Label;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 
-import java.math.BigInteger;
-import java.util.logging.Handler;
-
+/**
+ * The Overview Controller
+ */
 public class ArtikelOverviewController {
     @FXML
     private TableView<Artikel> artikelTable;
@@ -39,16 +38,16 @@ public class ArtikelOverviewController {
     private Label priceLabel;
 
     @FXML
-    private Label additionalLabel1;
+    private Label additionalLabel1Left;
 
     @FXML
-    private Label additionalLabelFilling1;
+    private Label additionalLabel1Right;
 
     @FXML
-    private Label additionalLabel2;
+    private Label additionalLabel2Left;
 
     @FXML
-    private Label additionalLabelFilling2;
+    private Label additionalLabel2Right;
 
     @FXML
     private boolean areAdditionalLabelsEnabled = false;
@@ -59,6 +58,9 @@ public class ArtikelOverviewController {
 
     }
 
+    /**
+     * Initialise our idColumns, nameColumns and kindColumns
+     */
     @FXML
     private void initialize(){
         //Populating Columns
@@ -67,17 +69,20 @@ public class ArtikelOverviewController {
 
         this.idColumn.setCellValueFactory(cellData -> cellData.getValue().idProperty().asObject());
         this.nameColummn.setCellValueFactory(cellData -> cellData.getValue().nameProperty());
+        //Get the cellDatas class name, and substring the Directoy its in
+        //Bad because its hardcoded, but whatever.
         this.kindColumn.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().getClass().getName()
                 .substring("Controllers.structs.".length())));
 
 
 
         //Disable additioal buttons, which are unneeded for the start
-        this.disableAdditionalButtons();
+        this.disableAdditionalLabels();
 
         //clear person details
         showArtikelDetails(null);
 
+        //Add a changeListener to display the new Artikel details on click
         artikelTable.getSelectionModel().selectedItemProperty().addListener((
                 observable, oldValue, newValue) -> showArtikelDetails(newValue));
 
@@ -89,9 +94,13 @@ public class ArtikelOverviewController {
         this.mainApp = mainApp;
 
         artikelTable.setItems(mainApp.getLager().getArtikelData());
+        //Set the artikelTable
     }
 
-    //TODO configure for CD, DVD and Book classes
+    /**
+     * show the Artikel Details on the Right side of the Split Grid
+     * @param art
+     */
     public void showArtikelDetails(Artikel art){
         if(art != null){
 
@@ -104,33 +113,34 @@ public class ArtikelOverviewController {
 
             //Denote the Rest
             if(art.getClass().equals(Artikel.class)) {
-                this.disableAdditionalButtons();
+                this.disableAdditionalLabels();
+
             //If the given Artikel is of instance CD
             }else if(art instanceof CD){
 
                 CD cd = (CD) art;
 
-                this.enableAdditionalButtons();
-                this.additionalLabel1.setText("Interpret");
-                this.additionalLabelFilling1.setText(cd.getInterpret());
-                this.additionalLabel2.setText("Tracknumber");
-                this.additionalLabelFilling2.setText(Integer.toString(cd.getTracknumber()));
+                this.enableAdditionalLabels();
+                this.additionalLabel1Left.setText("Interpret");
+                this.additionalLabel1Right.setText(cd.getInterpret());
+                this.additionalLabel2Left.setText("Tracknumber");
+                this.additionalLabel2Right.setText(Integer.toString(cd.getTracknumber()));
             }else if(art instanceof DVD){
 
                 DVD dvd = (DVD) art;
-                this.enableAdditionalButtons();
-                this.additionalLabel1.setText("Release Date");
-                this.additionalLabelFilling1.setText(Integer.toString(dvd.getReleaseDate()));
-                this.additionalLabel2.setText("Playtime");
-                this.additionalLabelFilling2.setText(Integer.toString(dvd.getPlaytime()));
+                this.enableAdditionalLabels();
+                this.additionalLabel1Left.setText("Release Date");
+                this.additionalLabel1Right.setText(Integer.toString(dvd.getReleaseDate()));
+                this.additionalLabel2Left.setText("Playtime");
+                this.additionalLabel2Right.setText(Integer.toString(dvd.getPlaytime()));
             }else if (art instanceof Buch){
 
                 Buch buch = (Buch) art;
-                this.enableAdditionalButtons();
-                this.additionalLabel1.setText("Author");
-                this.additionalLabelFilling1.setText(buch.getAuthor());
-                this.additionalLabel2.setText("Verlag");
-                this.additionalLabelFilling2.setText(buch.getVerlag());
+                this.enableAdditionalLabels();
+                this.additionalLabel1Left.setText("Author");
+                this.additionalLabel1Right.setText(buch.getAuthor());
+                this.additionalLabel2Left.setText("Verlag");
+                this.additionalLabel2Right.setText(buch.getVerlag());
             }
         }else{
             this.idLabel.setText("");
@@ -140,11 +150,18 @@ public class ArtikelOverviewController {
         }
     }
 
-    public void handleDeleteArtikel(){
+    /**
+     * Handle the User clicking on the Delete button
+     */
+    @FXML
+    private void handleDeleteArtikel(){
+        //Get the currently highlighted item and its index
         int selectedIndex = artikelTable.getSelectionModel().getSelectedIndex();
+        //if the index is above or 0 , remove it (its -1 on nothing selected)
         if(selectedIndex >= 0) {
             artikelTable.getItems().remove(selectedIndex);
-        }else{
+
+        }else{ //Warn the USer on else
             Alert alert = new Alert(Alert.AlertType.WARNING);
             alert.initOwner(mainApp.getPrimaryStage());
             alert.setTitle("ERROR");
@@ -161,11 +178,17 @@ public class ArtikelOverviewController {
     @FXML
     private void handleNewArtikel() {
 
-
+        //tempArtikel is set the either an empty Artikel or an empty value of one of its Subclasses
         Artikel tempArtikel = mainApp.showArtikelNewChooserDialog();
+
+        //If its not null (meaning if the user selected something and press OK)
         if(tempArtikel != null){
+            //Show the new Dialog
             boolean okClicked = mainApp.showArtikelNewDialog(tempArtikel);
-            if (okClicked) {
+
+            if (okClicked) { //If the user clicked OK
+
+                //If an Artikel with the same ID is already in the Lager, warn the user
                 if(mainApp.getLager().getArtikelData().contains(tempArtikel)){
                     Alert alert = new Alert(Alert.AlertType.WARNING);
                     alert.initOwner(mainApp.getPrimaryStage());
@@ -174,6 +197,7 @@ public class ArtikelOverviewController {
 
 
                     alert.showAndWait();
+                //Else add it to the lager
                 }else {
                     mainApp.getLager().getArtikelData().add(tempArtikel);
                 }
@@ -208,25 +232,27 @@ public class ArtikelOverviewController {
         }
     }
 
+    /**
+     * Disable the additional Labels by setting their Opacity to 0
+     */
     @FXML
-    public void disableAdditionalButtons(){
-        this.additionalLabel1.setOpacity(0D);
-        this.additionalLabelFilling1.setOpacity(0D);
-        this.additionalLabel2.setOpacity(0D);
-        this.additionalLabelFilling2.setOpacity(0D);
+    public void disableAdditionalLabels(){
+        this.additionalLabel1Left.setOpacity(0D);
+        this.additionalLabel1Right.setOpacity(0D);
+        this.additionalLabel2Left.setOpacity(0D);
+        this.additionalLabel2Right.setOpacity(0D);
     }
 
+    /**
+     * Enable the additional Labels by setting their Opacity to 1D
+     */
     @FXML
-    public void enableAdditionalButtons(){
-        this.additionalLabel1.setOpacity(1D);
-        this.additionalLabelFilling1.setOpacity(1D);
-        this.additionalLabel2.setOpacity(1D);
-        this.additionalLabelFilling2.setOpacity(1D);
+    public void enableAdditionalLabels(){
+        this.additionalLabel1Left.setOpacity(1D);
+        this.additionalLabel1Right.setOpacity(1D);
+        this.additionalLabel2Left.setOpacity(1D);
+        this.additionalLabel2Right.setOpacity(1D);
     }
 
-    @FXML
-    private void handleAbout(){
-
-    }
 
 }

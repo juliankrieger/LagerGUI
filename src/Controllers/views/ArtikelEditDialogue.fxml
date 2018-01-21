@@ -37,8 +37,8 @@
             <TextField fx:id="priceField" GridPane.columnIndex="1" GridPane.rowIndex="3" />
             <Label fx:id="additionalLabel1" text="AdditionalLabel1" GridPane.rowIndex="4" />
             <Label fx:id="additionalLabel2" text="AdditionalLabel2" GridPane.rowIndex="5" />
-            <TextField fx:id="additionalLabelFilling1" GridPane.columnIndex="1" GridPane.rowIndex="4" />
-            <TextField fx:id="additionalLabelFilling2" GridPane.columnIndex="1" GridPane.rowIndex="5" />
+            <TextField fx:id="additionalTextField1" GridPane.columnIndex="1" GridPane.rowIndex="4" />
+            <TextField fx:id="additionalTextField2" GridPane.columnIndex="1" GridPane.rowIndex="5" />
          </children>
       </GridPane>
       <ButtonBar layoutX="190.0" layoutY="163.0" prefHeight="40.0" prefWidth="200.0">
