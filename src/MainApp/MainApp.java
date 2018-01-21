@@ -22,6 +22,7 @@ import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.BorderPane;
 import javafx.stage.WindowEvent;
 import views.Controllers.*;
+import views.FXML.FXMLMarker;
 
 import javax.xml.bind.JAXBContext;
 import javax.xml.bind.Marshaller;
@@ -62,7 +63,7 @@ public class MainApp extends Application {
     public void showArtikelOverview(){
         try{
             FXMLLoader loader = new FXMLLoader(); //creating a loader in which we will load our FXML file into
-            loader.setLocation(MainApp.class.getResource("../views/FXML/ArtikelOverview.fxml")); //Setting the fxml file
+            loader.setLocation(FXMLMarker.class.getResource("ArtikelOverview.fxml")); //Setting the fxml file
             AnchorPane artikelOverview = (AnchorPane) loader.load(); //And casting loader.load into an Anchor Pane
 
             //set artikel overview into center of root layout
@@ -88,7 +89,7 @@ public class MainApp extends Application {
 
             //Load the fxml file and create a new Stage for the popup dialog.
             FXMLLoader loader = new FXMLLoader();
-            loader.setLocation(MainApp.class.getResource("../views/FXML/ArtikelNewChooser.fxml"));
+            loader.setLocation(FXMLMarker.class.getResource("ArtikelNewChooser.fxml"));
             AnchorPane page = (AnchorPane) loader.load();
 
             //create the dialog Stage.
@@ -129,7 +130,7 @@ public class MainApp extends Application {
         try{
             // Load the fxml file and create a new stage for the popup dialog.
             FXMLLoader loader = new FXMLLoader();
-            loader.setLocation(MainApp.class.getResource("../views/FXML/ArtikelNewDialogue.fxml"));
+            loader.setLocation(FXMLMarker.class.getResource("ArtikelNewDialogue.fxml"));
             AnchorPane page = (AnchorPane) loader.load();
 
             // Create the dialog Stage.
@@ -165,7 +166,7 @@ public class MainApp extends Application {
         try{
             // Load the fxml file and create a new stage for the popup dialog.
             FXMLLoader loader = new FXMLLoader();
-            loader.setLocation(MainApp.class.getResource("../views/FXML/ArtikelEditDialogue.fxml"));
+            loader.setLocation(FXMLMarker.class.getResource("ArtikelEditDialogue.fxml"));
             AnchorPane page = (AnchorPane) loader.load();
 
             // Create the dialog Stage.
@@ -222,7 +223,7 @@ public class MainApp extends Application {
         try {
             // Load root layout from fxml file.
             FXMLLoader loader = new FXMLLoader();
-            loader.setLocation(MainApp.class.getResource("../views/FXML/Root.fxml"));
+            loader.setLocation(FXMLMarker.class.getResource("Root.fxml"));
             rootLayout = (BorderPane) loader.load();
 
 
