@@ -8,7 +8,7 @@
   </information>
   <resources>
     <j2se version="1.6+" href="http://java.sun.com/products/autodl/j2se"/>
-    <jar href="LagerGUI.jar" size="47540" download="eager" />
+    <jar href="LagerGUI.jar" size="47534" download="eager" />
   </resources>
   <jfx:javafx-desc  width="600" height="400" main-class="MainApp.MainApp"  name="LagerGUI" />
   <update check="background"/>
