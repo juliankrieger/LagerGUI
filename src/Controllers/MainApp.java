@@ -3,10 +3,7 @@ package Controllers;
 import Controllers.structs.Artikel;
 import Controllers.structs.CD;
 import Controllers.structs.Lager;
-import Controllers.views.ArtikelEditController;
-import Controllers.views.ArtikelNewChooserController;
-import Controllers.views.ArtikelNewController;
-import Controllers.views.ArtikelOverviewController;
+import Controllers.views.*;
 import javafx.application.Application;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
@@ -32,10 +29,10 @@ public class MainApp extends Application {
     private BorderPane rootLayout;
     private Lager lager;
 
+
     public MainApp(){
         this.lager = new Lager();
-        lager.addArtikel(new Artikel(1000, "Ding", 5 , BigDecimal.valueOf(10)));
-        lager.addArtikel(new CD(5555, "Aggressive", 100, BigDecimal.valueOf(19.99), "Beartooth", 9));
+
     }
 
     /**
@@ -91,7 +88,7 @@ public class MainApp extends Application {
             AppLogger.logger.log(Level.SEVERE, "Fatal error while choosing Kind of a new Artikel", e);
             return null;
         }
-        return null;
+        return  null;
     }
 
     public boolean showArtikelNewDialog(Artikel art){
@@ -187,7 +184,12 @@ public class MainApp extends Application {
             // Show the scene containing the root layout.
             Scene scene = new Scene(rootLayout);
             primaryStage.setScene(scene);
+
+            RootController controller = loader.getController();
+            controller.setMainApp(this);
             primaryStage.show();
+
+
         } catch (IOException e) {
             e.printStackTrace();
             AppLogger.logger.log(Level.SEVERE, "Fatal Error while trying to initialize Root layout(File bar)", e);

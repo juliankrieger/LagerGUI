@@ -224,4 +224,9 @@ public class ArtikelOverviewController {
         this.additionalLabelFilling2.setOpacity(1D);
     }
 
+    @FXML
+    private void handleAbout(){
+
+    }
+
 }
