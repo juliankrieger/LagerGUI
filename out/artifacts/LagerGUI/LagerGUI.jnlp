@@ -1,15 +1,15 @@
 <?xml version="1.0" encoding="utf-8"?>
 <jnlp spec="1.0" xmlns:jfx="http://javafx.com" href="LagerGUI.jnlp">
   <information>
-    <title>LAGERGUI</title>
-    <vendor>Unknown</vendor>
-    <description>LagerGUI</description>
+    <title>LagerGUI</title>
+    <vendor>Julian Krieger</vendor>
+    <description>A graphical user interface for the Lager class given in a recent programming exercise</description>
     <offline-allowed/>
   </information>
   <resources>
     <j2se version="1.6+" href="http://java.sun.com/products/autodl/j2se"/>
-    <jar href="LagerGUI.jar" size="27211" download="eager" />
+    <jar href="LagerGUI.jar" size="30190" download="eager" />
   </resources>
-  <jfx:javafx-desc  width="600" height="400" main-class="Controllers.MainApp"  name="LagerGUI" />
+  <jfx:javafx-desc  width="600" height="400" main-class="MainApp.MainApp"  name="LagerGUI" />
   <update check="background"/>
 </jnlp>
