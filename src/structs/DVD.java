@@ -4,8 +4,6 @@ import javafx.beans.property.IntegerProperty;
 import javafx.beans.property.SimpleIntegerProperty;
 import javafx.fxml.FXML;
 
-import java.math.BigDecimal;
-
 public class DVD extends Artikel {
     @FXML
     private IntegerProperty releaseDate, playtime;
@@ -19,7 +17,7 @@ public class DVD extends Artikel {
         this.playtime = new SimpleIntegerProperty(0);
     }
 
-    public DVD(int id, String name, int stack, BigDecimal price, int releaseDate, int playtime){
+    public DVD(int id, String name, int stack, Float price, int releaseDate, int playtime){
         super(id, name, stack, price);
         if(releaseDate < MIN_DATE || releaseDate > MAX_DATE){
             throw new IllegalArgumentException("Release Date not in Range between " + MIN_DATE +" and " + MAX_DATE);

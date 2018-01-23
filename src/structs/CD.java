@@ -3,8 +3,6 @@ package structs;
 import javafx.beans.property.*;
 import javafx.fxml.FXML;
 
-import java.math.BigDecimal;
-
 public class CD extends Artikel {
     @FXML
     private StringProperty interpret;
@@ -20,7 +18,7 @@ public class CD extends Artikel {
 
 
 
-    public CD(int id, String name, int stack, BigDecimal price, String interpret, int tracknumber){
+    public CD(int id, String name, int stack, Float price, String interpret, int tracknumber){
         super(id, name, stack, price);
         if(interpret.isEmpty()){
             throw new IllegalArgumentException("Interpret must not be empty");

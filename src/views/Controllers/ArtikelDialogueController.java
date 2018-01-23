@@ -1,5 +1,6 @@
 package views.Controllers;
 
+import javafx.scene.control.Button;
 import structs.Buch;
 import structs.CD;
 import structs.DVD;
@@ -39,6 +40,11 @@ public abstract class ArtikelDialogueController{
     @FXML
     private TextField additionalTextField2; //The second additional TextField
 
+    @FXML
+    protected Button okButton;
+
+
+
 
     /**
      * This is needed to ask the User if he wants to edit ID and Name of an Artikel, two attributes which are normally
@@ -57,7 +63,6 @@ public abstract class ArtikelDialogueController{
      * Standart Constructor, does little to nothing
      */
     public ArtikelDialogueController(){
-
     }
 
     /**
@@ -146,7 +151,7 @@ public abstract class ArtikelDialogueController{
      * and called on action event.
      */
     @FXML
-    private void handleOk(){
+    protected void handleOk(){
         if(isInputValid()){ //If the Input is valid
 
             //Set the first four values, which Artikel and each of its subclasses share
@@ -197,7 +202,7 @@ public abstract class ArtikelDialogueController{
      * All hope abandon, ye who enter here!
      * @return
      */
-    private boolean isInputValid(){
+    protected boolean isInputValid(){
 
         //Check the ID Field on emptyness, being a number and being below IDMIN or above IDMAX
         if(this.idField.getText() == null || !isInteger(this.idField.getText())
@@ -267,8 +272,8 @@ public abstract class ArtikelDialogueController{
     }
 
     /**
-     * Needed to check if a String is an Integer. Exception bases Checking is awful style, but the method lives
-     * of simplicity
+     * Needed to check if a String is an Integer. Exception based Checking is awful style, but the method lives
+     * of its simplicity
      * @param s String
      * @return true if its and Integer, false on else
      */
@@ -289,7 +294,7 @@ public abstract class ArtikelDialogueController{
      */
     public static boolean isFloat(String s){
         try{
-            Float f = Float.parseFloat(s);
+            Float.parseFloat(s);
         }catch(NumberFormatException e){
             return false;
         }

@@ -1,6 +1,8 @@
 package MainApp;
 
+import javafx.fxml.FXML;
 import javafx.scene.control.Alert;
+import javafx.scene.control.CheckMenuItem;
 import structs.Artikel;
 import structs.ArtikelListWrapper;
 import structs.Lager;
@@ -46,6 +48,7 @@ public class MainApp extends Application {
      */
     private Lager lager;
 
+    private boolean enableLoadFileFromLastUse = true;
 
     /***
      * Basic Constructor, initializes the Lager
@@ -235,6 +238,9 @@ public class MainApp extends Application {
             controller.setMainApp(this);
             primaryStage.show();
 
+            this.getEnableLoadFileFromLastUseBool(controller.debugItem);
+
+
 
         } catch (IOException e) {
             e.printStackTrace();
@@ -243,7 +249,7 @@ public class MainApp extends Application {
 
         // Try to load last opened person file.
         File file = getArtikelFilePath();
-        if (file != null) {
+        if (file != null && this.enableLoadFileFromLastUse) {
             loadArtikelDataFromFile(file);
         }
     }
@@ -321,27 +327,31 @@ public class MainApp extends Application {
      * @param file
      */
     public void loadArtikelDataFromFile(File file) {
-        try {
-            JAXBContext context = JAXBContext
-                    .newInstance(ArtikelListWrapper.class);
-            Unmarshaller um = context.createUnmarshaller();
+        if(file != null) {
 
-            // Reading XML from the file and unmarshalling.
-            ArtikelListWrapper wrapper = (ArtikelListWrapper) um.unmarshal(file);
+            try {
+                JAXBContext context = JAXBContext
+                        .newInstance(ArtikelListWrapper.class);
+                Unmarshaller um = context.createUnmarshaller();
 
-            this.lager.getArtikelData().clear();
-            this.lager.getArtikelData().addAll(wrapper.getArtikelList());
 
-            // Save the file path to the registry.
-            setArtikelFilePath(file);
+                // Reading XML from the file and unmarshalling.
+                ArtikelListWrapper wrapper = (ArtikelListWrapper) um.unmarshal(file);
 
-        } catch (Exception e) { // catches ANY exception
-            Alert alert = new Alert(Alert.AlertType.ERROR);
-            alert.setTitle("Error");
-            alert.setHeaderText("Could not load data");
-            alert.setContentText("Could not load data from file:\n" + file.getPath());
+                this.lager.getArtikelData().clear();
+                this.lager.getArtikelData().addAll(wrapper.getArtikelList());
 
-            alert.showAndWait();
+                // Save the file path to the registry.
+                setArtikelFilePath(file);
+
+            } catch (Exception e) { // catches ANY exception
+                Alert alert = new Alert(Alert.AlertType.ERROR);
+                alert.setTitle("Error");
+                alert.setHeaderText("Could not load data");
+                alert.setContentText("Could not load data from file:\n" + file.getPath() + " may be corrupt?");
+
+                alert.showAndWait();
+            }
         }
     }
 
@@ -350,6 +360,7 @@ public class MainApp extends Application {
      *
      * @param file
      */
+    //TODO create ArtikelListFactory, get a list for each datatype, and wrap them all up in a wrapper for each
     public void saveArtikelDataToFile(File file) {
         try {
             JAXBContext context = JAXBContext
@@ -370,10 +381,25 @@ public class MainApp extends Application {
             Alert alert = new Alert(Alert.AlertType.ERROR);
             alert.setTitle("Error");
             alert.setHeaderText("Could not save data");
-            alert.setContentText("Could not save data to file:\n" + file.getPath());
+            alert.setContentText("Could not save data to file:\n" + file.getPath() + " may be read only?");
 
             alert.showAndWait();
         }
+    }
+
+    public void switchEnableLoadFileFromLastUse(){
+        this.enableLoadFileFromLastUse = !this.enableLoadFileFromLastUse;
+    }
+
+    public boolean getEnableLoadFileFromLastUse(){
+        return this.enableLoadFileFromLastUse;
+    }
+
+    private void getEnableLoadFileFromLastUseBool(CheckMenuItem item){
+        Preferences prefs = Preferences.userNodeForPackage(MainApp.class);
+        this.enableLoadFileFromLastUse = prefs.getBoolean("EnableLoadFileFromLastUse", true);
+        item.setSelected(this.enableLoadFileFromLastUse);
+
     }
 
 

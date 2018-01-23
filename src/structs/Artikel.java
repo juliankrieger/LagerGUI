@@ -2,9 +2,15 @@ package structs;
 
 import javafx.beans.property.*;
 
-import java.math.BigDecimal;
+import javax.xml.bind.annotation.XmlAttribute;
+import javax.xml.bind.annotation.XmlElement;
+import javax.xml.bind.annotation.XmlRootElement;
+import javax.xml.bind.annotation.XmlValue;
 
+@XmlRootElement(name = "artikel")
 public class Artikel {
+
+
     private IntegerProperty id;
     private StringProperty name;
     private IntegerProperty stock;
@@ -36,9 +42,9 @@ public class Artikel {
         return getId();
     }
 
-    public Artikel(int id, String name, int stack, BigDecimal price){
+    public Artikel(int id, String name, int stack, Float price){
         this(id, name, stack);
-        if(price.compareTo(BigDecimal.ZERO) < 0){
+        if(price < 0){
             throw new IllegalArgumentException("Price is below Zero!");
         }
         this.price = new SimpleFloatProperty(price.floatValue());
@@ -73,6 +79,8 @@ public class Artikel {
 
     }
 
+
+
     public int getId() {
         return id.get();
     }
@@ -93,6 +101,7 @@ public class Artikel {
         this.id.set(id);
     }
 
+
     public String getName() {
         return name.get();
     }
@@ -105,6 +114,7 @@ public class Artikel {
         this.name.set(name);
     }
 
+
     public int getStock() {
         return stock.get();
     }
@@ -116,6 +126,7 @@ public class Artikel {
     public void setStack(int stack) {
         this.stock.set(stack);
     }
+
 
     public float getPrice() {
         return price.get();

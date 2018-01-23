@@ -3,10 +3,12 @@ package views.Controllers;
 import MainApp.MainApp;
 import javafx.fxml.FXML;
 import javafx.scene.control.Alert;
+import javafx.scene.control.CheckMenuItem;
 import javafx.stage.FileChooser;
 
 import java.awt.*;
 import java.io.File;
+import java.util.prefs.Preferences;
 
 public class RootController {
     @FXML
@@ -17,6 +19,9 @@ public class RootController {
     public void setMainApp(MainApp mainApp){
         this.mainApp = mainApp;
     }
+
+    @FXML
+    public CheckMenuItem debugItem;
 
     /**
      * Creates an empty address book.
@@ -101,5 +106,14 @@ public class RootController {
     @FXML
     private void handleExit() {
         System.exit(0);
+    }
+
+    @FXML
+    private void switchEnableLoadFileFromLastOpen(){
+        mainApp.switchEnableLoadFileFromLastUse();
+        Preferences prefs = Preferences.userNodeForPackage(MainApp.class);
+
+        prefs.remove("EnableLoadFileFromLastUse");
+        prefs.putBoolean("EnableLoadFileFromLastUse", mainApp.getEnableLoadFileFromLastUse());
     }
 }

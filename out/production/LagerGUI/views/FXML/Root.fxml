@@ -1,11 +1,12 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
+<?import javafx.scene.control.CheckMenuItem?>
 <?import javafx.scene.control.Menu?>
 <?import javafx.scene.control.MenuBar?>
 <?import javafx.scene.control.MenuItem?>
 <?import javafx.scene.layout.BorderPane?>
 
-<javafx.scene.layout.BorderPane prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/8.0.60" xmlns:fx="http://javafx.com/fxml/1" fx:controller="views.Controllers.RootController">
+<javafx.scene.layout.BorderPane prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/8.0.141" xmlns:fx="http://javafx.com/fxml/1" fx:controller="views.Controllers.RootController">
    <top>
       <MenuBar BorderPane.alignment="CENTER">
         <menus>
@@ -28,6 +29,11 @@
               <MenuItem mnemonicParsing="false" onAction="#handleAbout" text="About" />
             </items>
           </Menu>
+            <Menu mnemonicParsing="false" text="Debug">
+              <items>
+                  <CheckMenuItem fx:id="debugItem" mnemonicParsing="false" onAction="#switchEnableLoadFileFromLastOpen" selected="true" text="Load Last used File on Opening" />
+              </items>
+            </Menu>
         </menus>
       </MenuBar>
    </top>
